@@ -1,7 +1,11 @@
-export default function Page() {
+import React from 'react'
+import StudentsListContainer from '../components/StudentsListContainer'
+
+export default function PaidStudentsListPage() {
   return (
-    <div>
-      <h1>Paid Students</h1>
-    </div>
+    <StudentsListContainer
+      title="입금 완료 학생 리스트"
+      type="unpaid"
+    />
   )
 }

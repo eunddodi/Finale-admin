@@ -1,10 +1,11 @@
-const YourPage: React.FC = () => {
+import React from 'react'
+import StudentsListContainer from '../components/StudentsListContainer'
 
+export default function UnpaidStudentsListPage() {
   return (
-    <div>
-      <h1>Unpaid Students</h1>
-    </div>
+    <StudentsListContainer
+      title="미납 학생 리스트"
+      type="unpaid"
+    />
   )
 }
-
-export default YourPage
