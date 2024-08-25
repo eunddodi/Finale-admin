@@ -1,12 +1,6 @@
 'use client'
-import useToken from '@/hooks/useToken'
-import { redirectToLogin } from '@/lib/utils'
+import { redirect } from 'next/navigation'
 
 export default function Home() {
-  const token = useToken()
-  if (!token) {
-    redirectToLogin()
-  } else {
-    window.location.href = '/unpaid-students'
-  }
+  redirect('/unpaid-students')
 }
