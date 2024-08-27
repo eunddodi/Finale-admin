@@ -1,7 +1,18 @@
+import { useCancelLesson, useConfirmDeposit } from "@/api/student";
 import { StudentDetail } from "@/api/student/types";
+import useToken from "@/hooks/useToken";
 import { format, parse } from 'date-fns';
 
-export function StudentsListItem({ student }: { student: StudentDetail }) {
+export function StudentsListItem({ student, type }: { student: StudentDetail, type: 'paid' | 'unpaid' }) {
+  const cancelLessonMutation = useCancelLesson()
+  const confirmDepositMutation = useConfirmDeposit()
+
+  const token = useToken()
+  const { lessonStudentId } = student
+  const handleMove = () => { } // TODO: 반 이동 페이지로 이동
+  const handleCancel = () => cancelLessonMutation.mutate({ lessonStudentId, token })
+  const handleConfirm = () => confirmDepositMutation.mutate({ lessonStudentId, token })
+
   return (
     <div key={student.lessonStudentId} className="bg-gray-100 p-4 rounded-lg shadow flex justify-between">
       <div>
@@ -24,16 +35,16 @@ export function StudentsListItem({ student }: { student: StudentDetail }) {
       </div>
       <div>
         <div className="mt-4 flex space-x-2">
-          <button className="bg-red-100 text-red-500 text-sm px-3 font-semibold py-2 rounded-lg">
+          <button onClick={handleCancel} className="bg-red-100 text-red-500 text-sm px-3 font-semibold py-2 rounded-lg">
             등록 취소
           </button>
-          <button className="bg-blue-100 text-blue-500 text-sm px-3 font-semibold py-2 rounded-lg">
-            입금 확인
+          <button onClick={type === 'paid' ? handleMove : handleConfirm} className="bg-blue-100 text-blue-500 text-sm px-3 font-semibold py-2 rounded-lg">
+            {type === 'paid' ? '반 이동' : '입금 확인'}
           </button>
         </div>
         <div className="mt-2">
-          <button className="bg-gray-300 text-gray-800 text-sm px-3 font-semibold py-2 rounded-lg w-full">
-            독촉 문자 발송
+          <button className="bg-gray-300 text-gray-600 text-sm px-3 font-semibold py-2 rounded-lg w-full">
+            {type === 'paid' ? '전화번호 복사' : '독촉 문자 발송'}
           </button>
         </div>
       </div>

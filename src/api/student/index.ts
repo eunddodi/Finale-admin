@@ -1,5 +1,6 @@
 import { customFetch } from "@/lib/fetch"
 import { StudentDetail } from "./types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface FilterDTO {
   date?: string
@@ -22,7 +23,56 @@ export const getUnpaidStudents = async (dto: FilterDTO, token: string): Promise<
   return data
 }
 
-// 등록 취소
-// 입금 확인
+export const useCancelLesson = () => {
+  const cancelLesson = async ({ lessonStudentId, token }: { lessonStudentId: number, token: string }): Promise<void> => {
+    const { data } = await customFetch(`api/coach/lessonCencel/${lessonStudentId}`, token)
+    return data
+  }
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: cancelLesson,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] })
+    }
+  })
+}
+
+export const useConfirmDeposit = () => {
+  const confirmDeposit = async ({ lessonStudentId, token }: { lessonStudentId: number, token: string }): Promise<void> => {
+    const { data } = await customFetch(`api/coach/depositConfirm/${lessonStudentId}`, token)
+    return data
+  }
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: confirmDeposit,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] })
+    }
+  })
+}
+interface MoveLessonDTO {
+  lessonStudentId: number
+  lessonId: number // 옮기려는 반 아이디
+  studentId: number // 학생 아이디
+}
+
+export const useMoveLesson = () => {
+  const moveLesson = async ({ dto, token }: { dto: MoveLessonDTO, token: string }): Promise<void> => {
+    const { data } = await customFetch(`api/coach/moveLesson`, token, {
+      method: 'POST',
+      body: JSON.stringify(dto)
+    })
+    return data
+  }
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: moveLesson, onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] })
+    }
+  })
+}
+
 // 문자 발송
-// 반 이동시키기
