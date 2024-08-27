@@ -1,34 +1,18 @@
-import { getPaidStudents, getUnpaidStudents } from "@/api/student"
-import useToken from "@/hooks/useToken"
-import { useSuspenseQuery } from "@tanstack/react-query"
 import { StudentsListItem } from "./StudentsListItem"
+import { StudentDetail } from "@/api/student/types"
 
 interface StudentsListProps {
-  yearMonth: string
-  location: string
+  data: StudentDetail[]
   searchName: string
   type: 'paid' | 'unpaid'
 }
 
-export default function StudentsList({ yearMonth, location, searchName, type }: StudentsListProps) {
-
-  const token = useToken()
-  const { data: students } = useSuspenseQuery({
-    queryKey: ['students', type, yearMonth, location],
-    queryFn: () => {
-      const filter = { date: yearMonth, location: location }
-      return type === 'paid' ? getPaidStudents(filter, token) : getUnpaidStudents(filter, token)
-    },
-  })
-
-  const filteredStudents = students?.filter(student =>
-    !searchName || student.studentName.includes(searchName)
-  ) ?? []
+export default function StudentsList({ searchName, data, type }: StudentsListProps) {
 
   return (
     <ul className="space-y-2">
-      {filteredStudents.map(student => (
-        <StudentsListItem key={student.studentId} student={student} />
+      {data.filter((student: StudentDetail) => !searchName || student.studentName.includes(searchName)).map(student => (
+        <StudentsListItem key={student.lessonStudentId} student={student} type={type} />
       ))}
     </ul>
   )

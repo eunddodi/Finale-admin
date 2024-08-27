@@ -5,6 +5,10 @@ import LocationSelect from "./LocationSelect"
 import { Search } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
 import StudentsList from "./StudentsList"
+import useToken from "@/hooks/useToken"
+import { useQuery } from "@tanstack/react-query"
+import { getPaidStudents, getUnpaidStudents } from "@/api/student"
+import Loader from "./Loader"
 
 interface StudentsListContainerProps {
   title: string
@@ -15,6 +19,15 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
   const [selectedYearMonth, setSelectedYearMonth] = useState<string>('')
   const [selectedLocation, setSelectedLocation] = useState<string>('')
   const [searchName, setSearchName] = useState<string>('')
+
+  const token = useToken()
+  const { data: students } = useQuery({
+    queryKey: ['students', type, { yearMonth: selectedYearMonth, location: selectedLocation }],
+    queryFn: () => {
+      const filter = { date: selectedYearMonth, location: selectedLocation }
+      return type === 'paid' ? getPaidStudents(filter, token) : getUnpaidStudents(filter, token)
+    },
+  })
 
   return (
     <div className="container mx-auto p-2">
@@ -32,7 +45,7 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
         </select>
 
         <ErrorBoundary errorComponent={ErrorFallback}>
-          <Suspense fallback={<div>반 목록 로딩 중...</div>}>
+          <Suspense fallback={<Loader />}>
             <LocationSelect onSelectLocation={setSelectedLocation} />
           </Suspense>
         </ErrorBoundary>
@@ -49,14 +62,11 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
         </div>
       </div>
       <ErrorBoundary errorComponent={ErrorFallback}>
-        <Suspense fallback={<div>학생 목록 로딩 중...</div>}>
-          <StudentsList
-            yearMonth={selectedYearMonth}
-            location={selectedLocation}
-            searchName={searchName}
-            type={type}
-          />
-        </Suspense>
+        {students && <StudentsList
+          searchName={searchName}
+          data={students}
+          type={type}
+        />}
       </ErrorBoundary>
     </div>
   )
