@@ -11,8 +11,8 @@ const DynamicStudentsListContainer = dynamic(() => import('../components/Student
 export default function PaidStudentsListPage() {
   return (
     <DynamicStudentsListContainer
-      title="입금 완료 학생 리스트"
-      type="unpaid"
+      title="입금 완료 수강생 목록"
+      type="paid"
     />
   )
 }

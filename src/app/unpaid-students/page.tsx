@@ -9,7 +9,7 @@ const DynamicStudentsListContainer = dynamic(() => import('../components/Student
 export default function UnpaidStudentsListPage() {
   return (
     <DynamicStudentsListContainer
-      title="미납 학생 리스트"
+      title="미입금 수강생 목록"
       type="unpaid"
     />
   )

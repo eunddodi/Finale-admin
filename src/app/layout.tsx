@@ -25,9 +25,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={fontSans.variable}>
         <QueryClientProvider>
           <div className="min-h-screen bg-white">
-            <header className="bg-white shadow-sm">
+            <header className="bg-main shadow-sm">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-900">관리 시스템</h1>
+                <h1 className="text-2xl font-bold text-white">finale</h1>
                 <Navigation />
               </div>
             </header>

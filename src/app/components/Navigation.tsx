@@ -25,7 +25,7 @@ const Navigation: React.FC = () => {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Menu className="h-6 w-6" />
+          <Menu className="h-6 w-6 text-white" />
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -35,7 +35,7 @@ const Navigation: React.FC = () => {
               <li key={item.href} className="mb-2">
                 <Link
                   href={item.href}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                  className="block px-4 py-2 font-semibold text-gray-700 hover:bg-gray-100 rounded-md"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.title}
