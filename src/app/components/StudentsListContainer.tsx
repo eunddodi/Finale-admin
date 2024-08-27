@@ -17,7 +17,7 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
   const [searchName, setSearchName] = useState<string>('')
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-2">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
       <div className="flex flex-wrap gap-4 mb-4">
         <select

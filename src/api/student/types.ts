@@ -8,3 +8,14 @@ export interface Student {
 }
 
 export type StudentQueryFunction = QueryFunction<Student[], [string, string | undefined, string | undefined]>
+
+export interface StudentDetail {
+  lessonStudentId: number
+  studentId: number
+  lessonTitle: string
+  startTime: string
+  endTime: string
+  studentName: string
+  phoneNumber: string
+  enrollmentDate: string
+}

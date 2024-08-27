@@ -1,6 +1,7 @@
 import { getPaidStudents, getUnpaidStudents } from "@/api/student"
 import useToken from "@/hooks/useToken"
 import { useSuspenseQuery } from "@tanstack/react-query"
+import { StudentsListItem } from "./StudentsListItem"
 
 interface StudentsListProps {
   yearMonth: string
@@ -21,15 +22,13 @@ export default function StudentsList({ yearMonth, location, searchName, type }: 
   })
 
   const filteredStudents = students?.filter(student =>
-    !searchName || student.name.includes(searchName)
+    !searchName || student.studentName.includes(searchName)
   ) ?? []
 
   return (
     <ul className="space-y-2">
       {filteredStudents.map(student => (
-        <li key={student.id} className="p-2 bg-gray-100 rounded">
-          {student.name} - {student.location} ({student.date})
-        </li>
+        <StudentsListItem key={student.studentId} student={student} />
       ))}
     </ul>
   )
