@@ -17,7 +17,7 @@ export default function LocationSelect({ onSelectLocation }: LocationSelectProps
       className="p-2 border rounded"
       onChange={(e) => onSelectLocation(e.target.value)}
     >
-      <option value="">반 선택</option>
+      <option value="">장소 선택</option>
       {locations?.map((location) => (
         <option key={location.id} value={location.name}>{location.name}</option>
       ))}

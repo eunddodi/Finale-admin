@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 interface FilterDTO {
   date?: string
   location?: string
+  lessonId?: string
 }
 
 export const getPaidStudents = async (dto: FilterDTO, token: string): Promise<StudentDetail[]> => {
-  const url = `api/deposit/trueList?date=${dto.date || ''}&location=${dto.location || ''}`;
+  const url = `api/deposit/trueList?date=${dto.date || ''}&location=${dto.location || ''}&lessonId=${dto.lessonId || ''}`;
   const { data } = await customFetch(url, token, {
     method: 'GET'
   })
@@ -17,7 +18,7 @@ export const getPaidStudents = async (dto: FilterDTO, token: string): Promise<St
 }
 
 export const getUnpaidStudents = async (dto: FilterDTO, token: string): Promise<StudentDetail[]> => {
-  const url = `api/deposit/falseList?date=${dto.date || ''}&location=${dto.location || ''}`;
+  const url = `api/deposit/falseList?date=${dto.date || ''}&location=${dto.location || ''}&lessonId=${dto.lessonId || ''}`;
   const { data } = await customFetch(url, token, {
     method: 'GET'
   })

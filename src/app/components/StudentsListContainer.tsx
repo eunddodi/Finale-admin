@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getPaidStudents, getUnpaidStudents } from "@/api/student"
 import Loader from "./Loader"
 import YearMonthSelect from "./YearMonthSelect"
+import LessonSelect from "./LessonSelect"
 
 interface StudentsListContainerProps {
   title: string
@@ -19,13 +20,14 @@ interface StudentsListContainerProps {
 export default function StudentsListContainer({ title, type }: StudentsListContainerProps) {
   const [selectedYearMonth, setSelectedYearMonth] = useState<string>('')
   const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [selectedLessonId, setSelectedLessonId] = useState<string>('')
   const [searchName, setSearchName] = useState<string>('')
 
   const token = useToken()
   const { data: students } = useQuery({
-    queryKey: ['students', type, { yearMonth: selectedYearMonth, location: selectedLocation }],
+    queryKey: ['students', type, { yearMonth: selectedYearMonth, location: selectedLocation, lessonId: selectedLessonId }],
     queryFn: () => {
-      const filter = { date: selectedYearMonth, location: selectedLocation }
+      const filter = { date: selectedYearMonth, location: selectedLocation, lessonId: selectedLessonId }
       return type === 'paid' ? getPaidStudents(filter, token) : getUnpaidStudents(filter, token)
     },
   })
@@ -38,6 +40,11 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
             <LocationSelect onSelectLocation={setSelectedLocation} />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary errorComponent={ErrorFallback}>
+          <Suspense fallback={<Loader />}>
+            <LessonSelect onSelectLesson={setSelectedLessonId} selectedDate={selectedYearMonth} selectedLocation={selectedLocation} />
           </Suspense>
         </ErrorBoundary>
 
