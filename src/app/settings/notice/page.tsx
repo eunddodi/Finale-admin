@@ -24,10 +24,10 @@ const NoticePage: React.FC = () => {
     mutationFn: (newNotice: string) => updateNotice(newNotice, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notice'] })
-      toast.success('공지사항이 성공적으로 저장되었습니다.')
+      toast.success('공지사항 저장 성공')
     },
     onError: () => {
-      toast.error('공지사항 저장에 실패했습니다.')
+      toast.error('공지사항 저장 실패')
     }
   })
 
@@ -35,10 +35,10 @@ const NoticePage: React.FC = () => {
     mutationFn: (file: File) => uploadTimetableImage(file, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['timetableImage'] })
-      toast.success('이미지가 성공적으로 업로드되었습니다.')
+      toast.success('이미지 업로드 성공')
     },
     onError: () => {
-      toast.error('이미지 업로드에 실패했습니다.')
+      toast.error('이미지 업로드 실패')
     }
   })
 
@@ -50,7 +50,7 @@ const NoticePage: React.FC = () => {
       if (file) {
         await uploadImageMutation.mutateAsync(file)
       }
-      toast.success('모든 변경사항이 저장되었습니다.')
+      toast.success('변경사항 저장 완료')
     } catch (error) {
       console.error('Error saving changes:', error)
     } finally {
