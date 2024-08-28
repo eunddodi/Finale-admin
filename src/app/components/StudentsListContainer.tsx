@@ -9,6 +9,7 @@ import useToken from "@/hooks/useToken"
 import { useQuery } from "@tanstack/react-query"
 import { getPaidStudents, getUnpaidStudents } from "@/api/student"
 import Loader from "./Loader"
+import YearMonthSelect from "./YearMonthSelect"
 
 interface StudentsListContainerProps {
   title: string
@@ -33,17 +34,7 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
     <div className="container mx-auto p-2">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
       <div className="flex flex-wrap gap-4 mb-4">
-        <select
-          className="p-2 border rounded"
-          value={selectedYearMonth}
-          onChange={(e) => setSelectedYearMonth(e.target.value)}
-        >
-          <option value="">년월 선택</option>
-          {yearMonths.map((yearMonth) => (
-            <option key={yearMonth} value={yearMonth}>{yearMonth}</option>
-          ))}
-        </select>
-
+        <YearMonthSelect selectedYearMonth={selectedYearMonth} onSelectYearMonth={setSelectedYearMonth} />
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
             <LocationSelect onSelectLocation={setSelectedLocation} />
@@ -72,22 +63,3 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
   )
 }
 
-const generateYearMonths = (): string[] => {
-  const yearMonths: string[] = [];
-  const today = new Date();
-  const startDate = new Date(2024, 4); // 2024년 5월
-  const endDate = new Date(today.getFullYear(), today.getMonth() + 2, 1);
-
-  let currentDate = new Date(startDate);
-
-  while (currentDate < endDate) {
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    yearMonths.push(`${year}-${month}`);
-    currentDate.setMonth(currentDate.getMonth() + 1);
-  }
-
-  return yearMonths.reverse(); // 최신 날짜가 위로 오도록 역순 정렬
-};
-
-const yearMonths = generateYearMonths();
