@@ -1,21 +1,19 @@
-interface YearMonthSelectProps {
-  selectedYearMonth: string
-  onSelectYearMonth: (yearMonth: string) => void
-}
+import { useStudentsContext } from './StudentsContext'
 
-export default function YearMonthSelect({ selectedYearMonth, onSelectYearMonth }: YearMonthSelectProps) {
+export default function YearMonthSelect() {
+  const { selectedYearMonth, setSelectedYearMonth } = useStudentsContext()
+
   return (
     <select
       className="p-2 border rounded"
       value={selectedYearMonth}
-      onChange={(e) => onSelectYearMonth(e.target.value)}
+      onChange={(e) => setSelectedYearMonth(e.target.value)}
     >
       <option value="">년월 선택</option>
       {yearMonths.map((yearMonth) => (
         <option key={yearMonth} value={yearMonth}>{yearMonth}</option>
       ))}
     </select>
-
   )
 }
 

@@ -1,6 +1,6 @@
 "use client"
 import { ErrorBoundary } from "next/dist/client/components/error-boundary"
-import { Suspense, useState } from "react"
+import { Suspense } from "react"
 import LocationSelect from "./LocationSelect"
 import { Search } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
@@ -11,17 +11,22 @@ import { getPaidStudents, getUnpaidStudents } from "@/api/student"
 import Loader from "./Loader"
 import YearMonthSelect from "./YearMonthSelect"
 import LessonSelect from "./LessonSelect"
+import { StudentsProvider, useStudentsContext } from "./StudentsContext"
 
 interface StudentsListContainerProps {
   title: string
   type: 'paid' | 'unpaid'
 }
 
-export default function StudentsListContainer({ title, type }: StudentsListContainerProps) {
-  const [selectedYearMonth, setSelectedYearMonth] = useState<string>('')
-  const [selectedLocation, setSelectedLocation] = useState<string>('')
-  const [selectedLessonId, setSelectedLessonId] = useState<string>('')
-  const [searchName, setSearchName] = useState<string>('')
+function StudentsListContainerContent({ title }: { title: string }) {
+  const {
+    selectedYearMonth,
+    selectedLocation,
+    selectedLessonId,
+    searchName,
+    setSearchName,
+    type
+  } = useStudentsContext();
 
   const token = useToken()
   const { data: students } = useQuery({
@@ -36,15 +41,15 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
     <div className="container mx-auto p-2">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
       <div className="flex flex-wrap gap-4 mb-4">
-        <YearMonthSelect selectedYearMonth={selectedYearMonth} onSelectYearMonth={setSelectedYearMonth} />
+        <YearMonthSelect />
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
-            <LocationSelect onSelectLocation={setSelectedLocation} />
+            <LocationSelect />
           </Suspense>
         </ErrorBoundary>
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
-            <LessonSelect onSelectLesson={setSelectedLessonId} selectedDate={selectedYearMonth} selectedLocation={selectedLocation} />
+            <LessonSelect />
           </Suspense>
         </ErrorBoundary>
 
@@ -60,13 +65,16 @@ export default function StudentsListContainer({ title, type }: StudentsListConta
         </div>
       </div>
       <ErrorBoundary errorComponent={ErrorFallback}>
-        {students && <StudentsList
-          searchName={searchName}
-          data={students}
-          type={type}
-        />}
+        {students && <StudentsList data={students} />}
       </ErrorBoundary>
     </div>
   )
 }
 
+export default function StudentsListContainer({ title, type }: StudentsListContainerProps) {
+  return (
+    <StudentsProvider type={type}>
+      <StudentsListContainerContent title={title} />
+    </StudentsProvider>
+  )
+}
