@@ -74,7 +74,7 @@ interface MoveLessonDTO {
 
 export const useMoveLesson = () => {
   const moveLesson = async ({ dto, token }: { dto: MoveLessonDTO, token: string }): Promise<void> => {
-    const { data } = await customFetch(`api/coach/moveLesson`, token, {
+    const { data } = await customFetch(`api/coach/lessonChange`, token, {
       method: 'POST',
       body: JSON.stringify(dto)
     })

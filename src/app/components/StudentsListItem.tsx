@@ -2,14 +2,19 @@ import { useCancelLesson, useConfirmDeposit } from "@/api/student";
 import { StudentDetail } from "@/api/student/types";
 import useToken from "@/hooks/useToken";
 import { format, parse } from 'date-fns';
+import { useState } from "react";
+import MoveLessonBottomSheet from "./MoveLessonBottomSheet";
+import { useStudentsContext } from './StudentsContext';
 
-export function StudentsListItem({ student, type }: { student: StudentDetail, type: 'paid' | 'unpaid' }) {
+export function StudentsListItem({ student }: { student: StudentDetail }) {
+  const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
   const cancelLessonMutation = useCancelLesson()
   const confirmDepositMutation = useConfirmDeposit()
+  const { type, selectedYearMonth } = useStudentsContext();
 
   const token = useToken()
   const { lessonStudentId } = student
-  const handleMove = () => { } // TODO: 반 이동 페이지로 이동
+  const handleMove = () => setBottomSheetOpen(true)
   const handleCancel = () => cancelLessonMutation.mutate({ lessonStudentId, token })
   const handleConfirm = () => confirmDepositMutation.mutate({ lessonStudentId, token })
 
@@ -48,6 +53,7 @@ export function StudentsListItem({ student, type }: { student: StudentDetail, ty
           </button>
         </div>
       </div>
+      <MoveLessonBottomSheet open={bottomSheetOpen} onOpenChange={setBottomSheetOpen} currentDate={selectedYearMonth} targetStudent={student} />
     </div>
   )
 }
