@@ -1,3 +1,4 @@
+import { generateCurrentYearMonth } from '@/lib/utils';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface StudentsContextType {
@@ -28,7 +29,7 @@ interface StudentsProviderProps {
 }
 
 export const StudentsProvider: React.FC<StudentsProviderProps> = ({ children, type }) => {
-  const [selectedYearMonth, setSelectedYearMonth] = useState<string>('');
+  const [selectedYearMonth, setSelectedYearMonth] = useState<string>(generateCurrentYearMonth());
   const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [selectedLessonId, setSelectedLessonId] = useState<string>('');
   const [searchName, setSearchName] = useState<string>('');
