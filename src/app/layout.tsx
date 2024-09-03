@@ -44,7 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
 const toastConfig: ToastContainerProps = {
   hideProgressBar: true,
-  position: 'bottom-center',
+  position: 'top-center',
   autoClose: 3000,
   role: 'success',
   toastStyle: {

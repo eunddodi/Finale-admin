@@ -5,6 +5,7 @@ import { format, parse } from 'date-fns';
 import { useState } from "react";
 import MoveLessonBottomSheet from "./MoveLessonBottomSheet";
 import { useStudentsContext } from './StudentsContext';
+import { toast } from "react-toastify";
 
 export function StudentsListItem({ student }: { student: StudentDetail }) {
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
@@ -17,6 +18,14 @@ export function StudentsListItem({ student }: { student: StudentDetail }) {
   const handleMove = () => setBottomSheetOpen(true)
   const handleCancel = () => cancelLessonMutation.mutate({ lessonStudentId, token })
   const handleConfirm = () => confirmDepositMutation.mutate({ lessonStudentId, token })
+
+  const copyPhoneNumber = async () => {
+    await navigator.clipboard.writeText(student.phoneNumber);
+    toast.success('전화번호 복사 완료')
+  }
+  const sendMessage = () => {
+    // TODO: 독촉 문자 발송
+  }
 
   return (
     <div key={student.lessonStudentId} className="bg-gray-100 p-4 rounded-lg shadow flex justify-between">
@@ -48,7 +57,7 @@ export function StudentsListItem({ student }: { student: StudentDetail }) {
           </button>
         </div>
         <div className="mt-2">
-          <button className="bg-gray-300 text-gray-600 text-sm px-3 font-semibold py-2 rounded-lg w-full">
+          <button onClick={type === 'paid' ? copyPhoneNumber : sendMessage} className="bg-gray-300 text-gray-600 text-sm px-3 font-semibold py-2 rounded-lg w-full">
             {type === 'paid' ? '전화번호 복사' : '독촉 문자 발송'}
           </button>
         </div>
