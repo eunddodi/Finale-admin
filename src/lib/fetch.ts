@@ -32,7 +32,8 @@ export async function customFetch(url: string, token?: string, options?: any) {
     return await response.json()
   }
   catch (error: any) {
-    if (error instanceof AuthError) {
+    if (error instanceof AuthError || error instanceof ForbiddenError) {
+      alert('로그인에 실패했습니다. 다시 로그인해주세요.')
       redirectToLogin()
       return
     }
