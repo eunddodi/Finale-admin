@@ -24,10 +24,10 @@ export const uploadTimetableImage = async (file: File, token: string) => {
     token,
     {
       method: 'POST',
-      body: JSON.stringify({ file: formData }),
+      body: formData,
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        'Authorization': `Bearer ${token}`
+      }
     }
   )
   return data

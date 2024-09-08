@@ -6,7 +6,7 @@ export async function customFetch(url: string, token?: string, options?: any) {
   try {
     const response = await fetch(`${API_ENDPOINT}/${url}`, {
       credentials: 'include',
-      headers: {
+      headers: options?.headers || {
         'Content-Type': 'application/json',
         ...(token && { 'Authorization': `Bearer ${token}` }),
       },

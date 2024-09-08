@@ -1,11 +1,10 @@
 import { getTimetableImage } from "@/api/notice"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import Image from "next/image"
 import { useState } from "react"
 
 const TimetableImage: React.FC<{ onFileSelect: (file: File) => void }> = ({ onFileSelect }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const { data: imageData } = useSuspenseQuery({ queryKey: ['timetableImage'], queryFn: getTimetableImage });
+  const { data: imageUrl } = useSuspenseQuery({ queryKey: ['timetableImage'], queryFn: getTimetableImage });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -16,14 +15,12 @@ const TimetableImage: React.FC<{ onFileSelect: (file: File) => void }> = ({ onFi
   };
 
   const renderImageContent = () => {
-    if (previewUrl || (imageData && imageData.url)) {
+    if (previewUrl || imageUrl) {
       return (
         <div className="mt-4">
-          <Image
-            src={previewUrl || imageData.url}
+          <img
+            src={previewUrl || imageUrl}
             alt="Timetable"
-            width={300}
-            height={200}
             className="rounded-lg shadow-md"
           />
         </div>
@@ -47,10 +44,10 @@ const TimetableImage: React.FC<{ onFileSelect: (file: File) => void }> = ({ onFi
       <div className="flex items-center justify-center w-full">
         <label htmlFor="image" className="flex flex-col items-center justify-center w-full cursor-pointer">
           {renderImageContent()}
-          <input id="image" type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+          <input id="image" type="file" className="hidden" onChange={handleFileChange} />
         </label>
       </div>
-      {(previewUrl || (imageData && imageData.url)) && (
+      {(previewUrl || imageUrl) && (
         <p className="mt-2 text-sm text-gray-500 text-center">이미지를 변경하려면 클릭하세요</p>
       )}
     </div>
