@@ -1,10 +1,21 @@
 "use client"
-import { useLocations } from "@/api/location"
+import { useAddLocation, useLocations } from "@/api/location"
 import Loader from "@/app/components/Loader"
-import { Suspense } from "react"
+import { Suspense, useState } from "react"
+import LocationBottomSheet from "./components/LocationBottomSheet"
+import { CreateLocationDto } from "@/api/location/types"
 
 const YourPage: React.FC = () => {
-  const handleAdd = () => { alert('준비 중인 기능입니다.') }
+  const createMutation = useAddLocation()
+  const handleAdd = () => {
+    setIsOpen(true)
+  }
+
+  const handleSaveLocation = async (locationData: CreateLocationDto) => {
+    await createMutation.mutateAsync(locationData)
+  }
+
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className="container mx-auto p-2">
@@ -18,6 +29,11 @@ const YourPage: React.FC = () => {
       <Suspense fallback={<Loader />}>
         <LocationList />
       </Suspense>
+      <LocationBottomSheet
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        onSave={handleSaveLocation}
+      />
     </div>
   )
 }

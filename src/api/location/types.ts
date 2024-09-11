@@ -5,3 +5,5 @@ export interface ILocation {
   district: string
   address: string
 }
+
+export interface CreateLocationDto extends Omit<ILocation, 'id'> { }

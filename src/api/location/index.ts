@@ -1,6 +1,7 @@
 import { customFetch } from "@/lib/fetch"
 import { ILocation } from "./types"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import useToken from "@/hooks/useToken"
 
 export const useLocations = () => {
   const getLocations = async (): Promise<ILocation[]> => {
@@ -14,6 +15,22 @@ export const useLocations = () => {
   })
 }
 
-// 수업 장소 추가
+export const useAddLocation = () => {
+  const token = useToken()
+  const addLocation = async (locationData: Omit<ILocation, 'id'>): Promise<void> => {
+    await customFetch('api/location/create', token, {
+      method: 'POST',
+      body: JSON.stringify(locationData)
+    })
+  }
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: addLocation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['locations'] })
+    },
+  })
+}
 
 // 수업 장소 삭제
