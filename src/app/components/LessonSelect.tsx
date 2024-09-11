@@ -1,11 +1,9 @@
 import { useLessons } from "@/api/lesson"
-import useToken from "@/hooks/useToken"
 import { useStudentsContext } from './StudentsContext'
 
 export default function LessonSelect() {
-  const token = useToken()
   const { selectedYearMonth, selectedLocation, selectedLessonId, setSelectedLessonId } = useStudentsContext()
-  const { data: lessons } = useLessons({ date: selectedYearMonth, location: selectedLocation, token });
+  const { data: lessons } = useLessons({ date: selectedYearMonth, location: selectedLocation });
 
   return (
     <select

@@ -72,8 +72,7 @@ const Content = ({
   selectedLessonId: number | null
   onSelect: (lessonId: number) => void
 }) => {
-  const token = useToken()
-  const { data: lessons } = useLessons({ date, token })
+  const { data: lessons } = useLessons({ date })
 
   return (
     <div className="p-4 overflow-y-auto pb-32">
