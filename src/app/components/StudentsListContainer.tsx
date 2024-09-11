@@ -23,6 +23,7 @@ function StudentsListContainerContent({ title }: { title: string }) {
     selectedYearMonth,
     setSelectedYearMonth,
     selectedLocation,
+    setSelectedLocation,
     selectedLessonId,
     setSelectedLessonId,
     searchName,
@@ -52,7 +53,13 @@ function StudentsListContainerContent({ title }: { title: string }) {
         />
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
-            <LocationSelect />
+            <LocationSelect
+              selectedLocation={selectedLocation}
+              onChange={(location: string) => {
+                setSelectedLocation(location)
+                setSelectedLessonId('')
+              }}
+            />
           </Suspense>
         </ErrorBoundary>
         <ErrorBoundary errorComponent={ErrorFallback}>

@@ -1,10 +1,12 @@
 import { getLocations } from "@/api/location"
 import { ILocation } from "@/api/location/types"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { useStudentsContext } from './StudentsContext'
+interface Props {
+  selectedLocation: string
+  onChange: (location: string) => void
+}
 
-export default function LocationSelect() {
-  const { selectedLocation, setSelectedLocation, setSelectedLessonId } = useStudentsContext()
+export default function LocationSelect({ selectedLocation, onChange }: Props) {
   const { data: locations } = useSuspenseQuery<ILocation[]>({
     queryKey: ['locations'],
     queryFn: getLocations,
@@ -14,10 +16,7 @@ export default function LocationSelect() {
     <select
       className="p-2 border rounded"
       value={selectedLocation}
-      onChange={(e) => {
-        setSelectedLocation(e.target.value)
-        setSelectedLessonId('')
-      }}
+      onChange={(e) => onChange(e.target.value)}
     >
       <option value="">장소 선택</option>
       {locations?.map((location) => (
