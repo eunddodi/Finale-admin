@@ -21,8 +21,10 @@ interface StudentsListContainerProps {
 function StudentsListContainerContent({ title }: { title: string }) {
   const {
     selectedYearMonth,
+    setSelectedYearMonth,
     selectedLocation,
     selectedLessonId,
+    setSelectedLessonId,
     searchName,
     setSearchName,
     type
@@ -41,7 +43,13 @@ function StudentsListContainerContent({ title }: { title: string }) {
     <div className="container mx-auto p-2">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
       <div className="flex flex-wrap gap-4 mb-4">
-        <YearMonthSelect />
+        <YearMonthSelect
+          selectedYearMonth={selectedYearMonth}
+          onChange={(yearMonth: string) => {
+            setSelectedYearMonth(yearMonth)
+            setSelectedLessonId('')
+          }}
+        />
         <ErrorBoundary errorComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
             <LocationSelect />

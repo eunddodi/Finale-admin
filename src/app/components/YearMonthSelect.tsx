@@ -1,17 +1,17 @@
 import { generateYearMonths } from '@/lib/utils';
-import { useStudentsContext } from './StudentsContext'
 
-export default function YearMonthSelect() {
-  const { selectedYearMonth, setSelectedYearMonth, setSelectedLessonId } = useStudentsContext()
+interface Props {
+  selectedYearMonth: string
+  onChange: (yearMonth: string) => void
+}
+
+export default function YearMonthSelect({ selectedYearMonth, onChange }: Props) {
 
   return (
     <select
       className="p-2 border rounded"
       value={selectedYearMonth}
-      onChange={(e) => {
-        setSelectedYearMonth(e.target.value)
-        setSelectedLessonId('')
-      }}
+      onChange={(e) => onChange(e.target.value)}
     >
       {
         yearMonths.map((yearMonth) => (
