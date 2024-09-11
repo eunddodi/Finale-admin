@@ -14,10 +14,6 @@ const NoticePage: React.FC = () => {
   const [notice, setNotice] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
-  useEffect(() => {
-    console.log('file', file)
-  }, [file])
-
   const [isLoading, setIsLoading] = useState(false)
   const queryClient = useQueryClient()
   const token = useToken()
@@ -45,7 +41,6 @@ const NoticePage: React.FC = () => {
 
   const handleSave = async () => {
     setIsLoading(true)
-    console.log('notice', notice)
     try {
       await updateNoticeMutation.mutateAsync(notice)
       if (file) {
