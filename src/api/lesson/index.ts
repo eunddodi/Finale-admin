@@ -1,13 +1,12 @@
 import { customFetch } from "@/lib/fetch"
-import { CopyDTO, CreateDTO, UpdateDTO } from "./types"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { CopyDTO, CreateDTO, ILesson, UpdateDTO } from "./types"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
+import useToken from "@/hooks/useToken"
 
 interface UseLessonsParams {
   date: string
   location?: string
-  token: string
 }
-
 
 export interface UseLessonsResponse {
   lessonId: number
@@ -16,7 +15,8 @@ export interface UseLessonsResponse {
   endTime: string
 }
 
-export const useLessons = ({ date, location, token }: UseLessonsParams) => {
+export const useLessons = ({ date, location }: UseLessonsParams) => {
+  const token = useToken()
   const getLessonsByDateAndLocation = async (token: string, date?: string, location?: string,) => {
     const { data } = await customFetch(`api/lesson/withDateAndLocation?date=${date}&location=${location ?? ''}`, token, {
     })
@@ -29,9 +29,17 @@ export const useLessons = ({ date, location, token }: UseLessonsParams) => {
   })
 }
 
-export const getLessonDetail = async (id: number, token: string) => {
-  const { data } = await customFetch(`api/coach/lesson/${id}`, token)
-  return data
+
+export const useLessonDetail = (id?: number) => {
+  const token = useToken()
+  const getLessonDetail = async (id: number, token: string): Promise<ILesson> => {
+    const { data } = await customFetch(`api/coach/lesson/${id}`, token)
+    return data
+  }
+  return useSuspenseQuery({
+    queryKey: ['lesson', id],
+    queryFn: () => id ? getLessonDetail(id, token) : null,
+  })
 }
 
 // ELSE
@@ -44,18 +52,28 @@ export const copyLessons = async (dto: CopyDTO, token: string) => {
   return data
 }
 
-export const createLesson = async (dto: CreateDTO, token: string) => {
-  const { data } = await customFetch('api/coach/createLesson', token, {
-    method: 'POST',
-    body: JSON.stringify(dto),
-  })
-  return data
+export const useCreateLesson = () => {
+  const token = useToken()
+  const createLesson = async ({ dto }: { dto: CreateDTO }) => {
+    const { data } = await customFetch('api/coach/createLesson', token, {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    })
+    return data
+  }
+
+  return useMutation({ mutationFn: createLesson })
 }
 
-export const updateLesson = async (dto: UpdateDTO, token: string) => {
-  const { data } = await customFetch('api/coach/lessonChange', token, {
-    method: 'POST',
-    body: JSON.stringify(dto),
-  })
-  return data
+export const useUpdateLesson = () => {
+  const token = useToken()
+  const updateLesson = async ({ dto }: { dto: UpdateDTO }) => {
+    const { data } = await customFetch('api/coach/updateLesson', token, {
+      method: 'POST',
+      body: JSON.stringify(dto),
+    })
+    return data
+  }
+
+  return useMutation({ mutationFn: updateLesson })
 }
