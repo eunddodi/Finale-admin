@@ -44,14 +44,6 @@ export const useLessonDetail = (id?: number) => {
 
 // ELSE
 
-export const copyLessons = async (dto: CopyDTO, token: string) => {
-  const { data } = await customFetch('api/coach/lesson/copy', token, {
-    method: 'POST',
-    body: JSON.stringify(dto),
-  })
-  return data
-}
-
 export const useCreateLesson = () => {
   const token = useToken()
   const createLesson = async ({ dto }: { dto: CreateDTO }) => {
@@ -76,4 +68,16 @@ export const useUpdateLesson = () => {
   }
 
   return useMutation({ mutationFn: updateLesson })
+}
+
+export const useCopyLessons = () => {
+  const token = useToken()
+  const copyLessons = async ({ dto }: { dto: CopyDTO }) => {
+    const { data } = await customFetch(`api/coach/lesson/copy?lessonDate=${dto.lessonDate}`, token, {
+      method: 'POST',
+    })
+    return data
+  }
+
+  return useMutation({ mutationFn: copyLessons })
 }
