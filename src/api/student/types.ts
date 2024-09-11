@@ -18,4 +18,5 @@ export interface StudentDetail {
   studentName: string
   phoneNumber: string
   enrollmentDate: string
+  newbie: boolean
 }

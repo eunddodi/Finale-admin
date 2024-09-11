@@ -33,8 +33,7 @@ export function StudentsListItem({ student }: { student: StudentDetail }) {
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center">
             <span className="font-bold">{student.studentName}</span>
-            <span className="ml-2 text-white text-sm px-2 py-1 bg-main-dark rounded-full">기존</span>
-            {/* TODO: 기존 여부 플래그 */}
+            <span className={`ml-2 text-white font-semibold text-sm px-2 py-1 ${student.newbie ? 'bg-orange-400' : 'bg-main-dark'} rounded-full`}>{student.newbie ? '신규' : '기존'}</span>
           </div>
         </div>
         <div className="text-gray-700 break-all">{student.phoneNumber}</div>
