@@ -1,16 +1,11 @@
-import { getLocations } from "@/api/location"
-import { ILocation } from "@/api/location/types"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useLocations } from "@/api/location"
 interface Props {
   selectedLocation: string
   onChange: (location: string) => void
 }
 
 export default function LocationSelect({ selectedLocation, onChange }: Props) {
-  const { data: locations } = useSuspenseQuery<ILocation[]>({
-    queryKey: ['locations'],
-    queryFn: getLocations,
-  })
+  const { data: locations } = useLocations()
 
   return (
     <select
