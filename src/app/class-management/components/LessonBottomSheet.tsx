@@ -3,9 +3,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerHeader, DrawerFooter, DrawerTitle } from '@/components/ui/drawer'
 import { Input } from "@/components/ui/input"
-import { CreateDTO, ILesson } from '@/api/lesson/types'
+import { CreateDTO } from '@/api/lesson/types'
 import { useLessonDetail } from '@/api/lesson'
 import LocationSelect from '@/app/components/LocationSelect'
+import { toast } from 'react-toastify'
 
 interface Props {
   open: boolean
@@ -43,6 +44,10 @@ export default function LessonBottomSheet({ open, onOpenChange, lessonId, onSave
   }
 
   const handleSave = () => {
+    if (lessonData.lessonDates.length === 0 || lessonData.lessonDates.some(date => date.date === '' || date.startTime === '' || date.endTime === '') || lessonData.locationName === '' || isNaN(parseInt(lessonData.cost))) {
+      toast.error('입력값을 확인해주세요.')
+      return
+    }
     onSave(lessonData)
     onOpenChange(false)
     if (!lessonId) setLessonData(initialLessonData)
