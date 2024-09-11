@@ -1,4 +1,4 @@
-import { AuthError, BadRequestError, ForbiddenError, ServerError } from "@/types/errors"
+import { AuthError, BadRequestError, ForbiddenError, NotFoundError, ServerError } from "@/types/errors"
 import { API_ENDPOINT } from "@/constants"
 import { redirectToLogin } from "./utils"
 
@@ -22,6 +22,8 @@ export async function customFetch(url: string, token?: string, options?: any) {
           throw new AuthError(errorData.data)
         case 403:
           throw new ForbiddenError(errorData.data)
+        case 404:
+          throw new NotFoundError(errorData.data)
         case 500:
           throw new ServerError(errorData.data)
         default:
