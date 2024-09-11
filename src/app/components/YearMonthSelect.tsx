@@ -9,7 +9,7 @@ export default function YearMonthSelect({ selectedYearMonth, onChange }: Props) 
 
   return (
     <select
-      className="p-2 border rounded"
+      className="p-2 border rounded font-semibold"
       value={selectedYearMonth}
       onChange={(e) => onChange(e.target.value)}
     >
