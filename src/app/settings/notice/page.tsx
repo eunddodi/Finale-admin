@@ -8,6 +8,7 @@ import NoticeForm from './components/NoticeForm'
 import TimetableImage from './components/TimetableImage'
 import { updateNotice, uploadTimetableImage } from '@/api/notice'
 import useToken from '@/hooks/useToken'
+import Loader from '@/app/components/Loader'
 
 const NoticePage: React.FC = () => {
   const [notice, setNotice] = useState('')
@@ -68,7 +69,7 @@ const NoticePage: React.FC = () => {
           </div>
         </div>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Loader />}>
             <NoticeForm onChange={setNotice} notice={notice} />
             <TimetableImage onFileSelect={setFile} />
             <button
