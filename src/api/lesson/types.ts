@@ -25,12 +25,13 @@ interface LessonDate {
   endTime: string;
 }
 
-
 export interface CreateDTO extends Pick<ILesson, 'locationName' | 'cost' | 'maxStudents' | 'lessonDates'> {
   days: number
 }
 
-export interface UpdateDTO extends Partial<CreateDTO> { }
+export interface UpdateDTO extends Partial<CreateDTO> {
+  lessonId: number
+}
 
 export interface CopyDTO {
   lessonDate: string

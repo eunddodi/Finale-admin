@@ -27,7 +27,7 @@ export default function LessonsList({ selectedYearMonth }: { selectedYearMonth: 
   const handleSave = async (lessonData: CreateDTO) => {
     try {
       if (selectedLessonId) {
-        await updateMutation.mutateAsync({ dto: lessonData })
+        await updateMutation.mutateAsync({ dto: { ...lessonData, lessonId: selectedLessonId } })
         toast.success("레슨 업데이트 성공")
       } else {
         await createMutation.mutateAsync({ dto: lessonData })
