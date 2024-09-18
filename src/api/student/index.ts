@@ -2,6 +2,7 @@ import { customFetch } from "@/lib/fetch"
 import { StudentDetail } from "./types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { ForbiddenError } from "@/types/errors";
 
 interface FilterDTO {
   date?: string
@@ -61,7 +62,11 @@ export const useConfirmDeposit = () => {
       queryClient.invalidateQueries({ queryKey: ['students'] })
       toast.success('입금 확인 완료')
     },
-    onError: () => {
+    onError: (e) => {
+      if (e instanceof ForbiddenError) {
+        toast.error(`입금 확인은 마스터 계정에서만 가능합니다`)
+        return
+      }
       toast.error('입금 확인 실패')
     }
   })
@@ -89,4 +94,4 @@ export const useMoveLesson = () => {
   })
 }
 
-// 문자 발송
+// TODO: 문자 발송
