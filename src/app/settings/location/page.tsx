@@ -4,6 +4,7 @@ import Loader from "@/app/components/Loader"
 import { Suspense, useState } from "react"
 import LocationBottomSheet from "./components/LocationBottomSheet"
 import { CreateLocationDto } from "@/api/location/types"
+import { toast } from "react-toastify"
 
 const YourPage: React.FC = () => {
   const createMutation = useAddLocation()
@@ -12,7 +13,14 @@ const YourPage: React.FC = () => {
   }
 
   const handleSaveLocation = async (locationData: CreateLocationDto) => {
-    await createMutation.mutateAsync(locationData)
+    await createMutation.mutateAsync(locationData, {
+      onSuccess: () => {
+        toast.success('수업 장소 추가 성공')
+      },
+      onError: () => {
+        toast.error('수업 장소 추가 실패')
+      }
+    })
   }
 
   const [isOpen, setIsOpen] = useState(false)

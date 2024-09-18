@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent, DrawerHeader, DrawerDescription, DrawerFooter, DrawerTitle } from '@/components/ui/drawer'
 import { Input } from "@/components/ui/input"
-import { toast } from 'react-toastify'
 import { CreateLocationDto } from '@/api/location/types'
 
 interface Props {
@@ -25,15 +24,10 @@ export default function LocationBottomSheet({ open, onOpenChange, onSave }: Prop
     setLocationData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSave = async () => {
-    try {
-      await onSave(locationData)
-      toast.success('새 위치가 생성되었습니다.')
-      onOpenChange(false)
-      setLocationData(initialLocationData) // 폼 초기화
-    } catch (error) {
-      toast.error('위치 생성에 실패했습니다.')
-    }
+  const handleSave = () => {
+    onSave(locationData)
+    onOpenChange(false)
+    setLocationData(initialLocationData) // 폼 초기화
   }
 
   return (
