@@ -1,6 +1,5 @@
 import { AuthError, BadRequestError, ForbiddenError, NotFoundError, ServerError } from "@/types/errors"
 import { API_ENDPOINT } from "@/constants"
-import { redirectToLogin } from "./utils"
 
 export async function customFetch(url: string, token?: string, options?: any) {
   try {
@@ -34,11 +33,6 @@ export async function customFetch(url: string, token?: string, options?: any) {
     return await response.json()
   }
   catch (error: any) {
-    if (error instanceof AuthError || error instanceof ForbiddenError) {
-      alert('로그인에 실패했습니다. 다시 로그인해주세요.')
-      redirectToLogin()
-      return
-    }
     throw error
   }
 }
