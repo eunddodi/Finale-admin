@@ -1,5 +1,5 @@
 "use client"
-import { useAddLocation, useLocations } from "@/api/location"
+import { useAddLocation, useDeleteLocation, useLocations } from "@/api/location"
 import Loader from "@/app/components/Loader"
 import { Suspense, useState } from "react"
 import LocationBottomSheet from "./components/LocationBottomSheet"
@@ -50,8 +50,15 @@ export default YourPage
 
 const LocationList = () => {
   const { data: locations } = useLocations()
+  const deleteMutation = useDeleteLocation()
 
-  const handleDelete = (id: number) => { alert('준비 중인 기능입니다.') }
+  const handleDelete = (name: string) => {
+    deleteMutation.mutate(name, {
+      onSuccess: () => {
+        toast.success('삭제 성공')
+      }
+    })
+  }
   return (
     <div>
       {locations.map((location) => (
@@ -60,7 +67,7 @@ const LocationList = () => {
           className="w-full py-2 flex justify-between"
         >
           {location.name}
-          <button onClick={() => handleDelete(location.id)} className="text-sm px-2 font-semibold py-1 rounded-lg">삭제</button>
+          <button onClick={() => handleDelete(location.name)} className="text-sm px-2 font-semibold py-1 rounded-lg">삭제</button>
         </div>
       ))}
 

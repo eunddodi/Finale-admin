@@ -33,4 +33,20 @@ export const useAddLocation = () => {
   })
 }
 
-// 수업 장소 삭제
+export const useDeleteLocation = () => {
+  const token = useToken()
+  const deleteLocation = async (name: string): Promise<void> => {
+    await customFetch(`api/location/delete`, token, {
+      method: 'POST',
+      body: JSON.stringify({ name })
+    })
+  }
+
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: deleteLocation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['locations'] })
+    },
+  })
+}
