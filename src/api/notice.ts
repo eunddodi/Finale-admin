@@ -1,4 +1,6 @@
+import useToken from "@/hooks/useToken"
 import { customFetch } from "@/lib/fetch"
+import { useMutation } from "@tanstack/react-query"
 
 export const getNotice = async () => {
   const { data } = await customFetch('api/lesson/notice')
@@ -38,7 +40,18 @@ export const getTimetableImage = async () => {
   return data
 }
 
-// 문자 문구 조회
-// 문자 문구 수정
+export const useSendMessage = () => {
+  const token = useToken()
+  const sendMessage = async ({ lessonStudentId, phoneNumber }: { lessonStudentId: number, phoneNumber: string }) => {
+    const { data } = await customFetch('api/sms/remind', token,
+      {
+        method: 'POST',
+        body: JSON.stringify({ lessonStudentId, phoneNumber })
+      })
+    return data
+  }
 
-// 이미지 수정
+  return useMutation({
+    mutationFn: sendMessage,
+  })
+}

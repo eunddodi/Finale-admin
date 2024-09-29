@@ -6,11 +6,13 @@ import { useState } from "react";
 import MoveLessonBottomSheet from "./MoveLessonBottomSheet";
 import { useStudentsContext } from './StudentsContext';
 import { toast } from "react-toastify";
+import { useSendMessage } from "@/api/notice";
 
 export function StudentsListItem({ student }: { student: StudentDetail }) {
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
   const cancelLessonMutation = useCancelLesson()
   const confirmDepositMutation = useConfirmDeposit()
+  const sendMessageMutation = useSendMessage()
   const { type, selectedYearMonth } = useStudentsContext();
 
   const token = useToken()
@@ -24,7 +26,11 @@ export function StudentsListItem({ student }: { student: StudentDetail }) {
     toast.success('전화번호 복사 완료')
   }
   const sendMessage = () => {
-    // TODO: 독촉 문자 발송
+    sendMessageMutation.mutate({ lessonStudentId: student.lessonStudentId, phoneNumber: student.phoneNumber }, {
+      onSuccess: () => {
+        toast.success('문자 발송 완료')
+      }
+    })
   }
 
   return (
