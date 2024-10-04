@@ -8,11 +8,6 @@ import { useState } from "react";
 
 export default function QueryClientProvider({ children }: { children: React.ReactNode }) {
   const [client] = useState(new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: 1
-      }
-    },
     queryCache: new QueryCache({
       onError: (error) => {
         if (error instanceof AuthError || error instanceof ForbiddenError) {
