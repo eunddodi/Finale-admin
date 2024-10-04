@@ -10,7 +10,7 @@ export default function QueryClientProvider({ children }: { children: React.Reac
   const [client] = useState(new QueryClient({
     defaultOptions: {
       queries: {
-        retry: 0
+        retry: 1
       }
     },
     queryCache: new QueryCache({
