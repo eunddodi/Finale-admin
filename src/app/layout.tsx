@@ -4,6 +4,7 @@ import Navigation from "./components/Navigation";
 import QueryClientProvider from "./components/QueryClientProvider";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, ToastContainerProps } from "react-toastify";
+import Link from "next/link";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="min-h-screen bg-white">
             <header className="bg-main shadow-sm">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-white">finale</h1>
+                <Link href='/' className="text-2xl font-bold text-white">finale</Link>
                 <Navigation />
               </div>
             </header>
