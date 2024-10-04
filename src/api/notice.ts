@@ -1,6 +1,6 @@
 import useToken from "@/hooks/useToken"
 import { customFetch } from "@/lib/fetch"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
 
 export const getNotice = async () => {
   const { data } = await customFetch('api/lesson/notice')
@@ -38,6 +38,35 @@ export const uploadTimetableImage = async (file: File, token: string) => {
 export const getTimetableImage = async () => {
   const { data } = await customFetch('api/lesson/timetable')
   return data
+}
+
+export const useGetMessageTemplate = () => {
+  const token = useToken()
+  const getMessageTemplate = async () => {
+    const { data } = await customFetch('api/sms/detail', token)
+    return data
+  }
+
+  return useSuspenseQuery({
+    queryKey: ['messageTemplate'],
+    queryFn: getMessageTemplate,
+  })
+}
+
+export const useUpdateMessageTemplate = () => {
+  const token = useToken()
+  const updateMessageTemplate = async (message: string) => {
+    const { data } = await customFetch('api/sms/createTemplate', token,
+      {
+        method: 'POST',
+        body: JSON.stringify({ text: message })
+      })
+    return data
+  }
+
+  return useMutation({
+    mutationFn: updateMessageTemplate,
+  })
 }
 
 export const useSendMessage = () => {
