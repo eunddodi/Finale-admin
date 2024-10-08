@@ -11,7 +11,6 @@ export default function QueryClientProvider({ children }: { children: React.Reac
     queryCache: new QueryCache({
       onError: (error) => {
         if (error instanceof AuthError || error instanceof ForbiddenError) {
-          alert('로그인에 실패했습니다. 다시 로그인해주세요.')
           redirectToLogin()
         }
       }

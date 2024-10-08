@@ -56,7 +56,6 @@ function Login() {
         window.location.href = redirectTo || '/'
 
       } catch (e) {
-        alert('로그인에 실패했습니다. 홈 화면으로 이동합니다.')
         window.location.href = '/'
       }
     }
