@@ -2,13 +2,12 @@
 import { ErrorBoundary } from "next/dist/client/components/error-boundary"
 import { Suspense } from "react"
 import LocationSelect from "./LocationSelect"
-import { Search } from "lucide-react"
+import { Loader, Search } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
 import StudentsList from "./StudentsList"
 import useToken from "@/hooks/useToken"
 import { useQuery } from "@tanstack/react-query"
 import { getPaidStudents, getUnpaidStudents } from "@/api/student"
-import Loader from "./Loader"
 import YearMonthSelect from "./YearMonthSelect"
 import LessonSelect from "./LessonSelect"
 import { StudentsProvider, useStudentsContext } from "./StudentsContext"
@@ -40,6 +39,12 @@ function StudentsListContainerContent({ title }: { title: string }) {
     },
   })
 
+  if (!students) return (<div className="flex flex-col gap-4 text-neutral-600 items-center justify-center mt-12">
+    <Loader size={40} color="#82bdaa" />
+    loading...
+  </div>
+  )
+
   return (
     <div className="container mx-auto p-2">
       <h1 className="text-2xl font-bold mb-4">{title}</h1>
@@ -67,7 +72,6 @@ function StudentsListContainerContent({ title }: { title: string }) {
             <LessonSelect />
           </Suspense>
         </ErrorBoundary>
-
         <div className="relative">
           <input
             type="text"
