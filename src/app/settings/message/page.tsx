@@ -3,7 +3,12 @@ import ErrorFallback from "@/app/components/ErrorFallback";
 import Loader from "@/app/components/Loader";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import MessageTemplateForm from "./components/MessageTemplateForm";
+import dynamic from "next/dynamic";
+
+const DynamicMessageTemplateForm = dynamic(() => import('./components/MessageTemplateForm'), {
+  loading: () => <Loader />,
+  ssr: false,
+});
 
 export default function MessagePage() {
   return (
@@ -14,7 +19,7 @@ export default function MessagePage() {
         </div>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Suspense fallback={<Loader />}>
-            <MessageTemplateForm />
+            <DynamicMessageTemplateForm />
           </Suspense>
         </ErrorBoundary>
       </div>

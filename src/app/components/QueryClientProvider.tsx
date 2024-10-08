@@ -8,6 +8,11 @@ import { useState } from "react";
 
 export default function QueryClientProvider({ children }: { children: React.ReactNode }) {
   const [client] = useState(new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
     queryCache: new QueryCache({
       onError: (error) => {
         if (error instanceof AuthError || error instanceof ForbiddenError) {
