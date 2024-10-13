@@ -1,6 +1,6 @@
 'use client'
 
-import useLocalStorage, { LOCAL_STORAGE_KEYS } from '@/hooks/useLocalStorage'
+import useSessionStorage, { SESSION_STORAGE_KEYS } from '@/hooks/useSessionStorage'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect, useRef } from 'react'
 import { customFetch } from '@/lib/fetch'
@@ -31,8 +31,8 @@ export default function LoginCallbackPage() {
 function Login() {
   const params = useSearchParams()
 
-  const setToken = useLocalStorage(LOCAL_STORAGE_KEYS.TOKEN)[1]
-  const redirectTo = useLocalStorage(LOCAL_STORAGE_KEYS.REDIRECT_TO)[0]
+  const setToken = useSessionStorage(SESSION_STORAGE_KEYS.TOKEN)[1]
+  const redirectTo = useSessionStorage(SESSION_STORAGE_KEYS.REDIRECT_TO)[0]
 
   const isCallbackExecuted = useRef(false)
 
