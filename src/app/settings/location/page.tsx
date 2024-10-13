@@ -1,10 +1,11 @@
 "use client"
 import { useAddLocation, useDeleteLocation, useLocations } from "@/api/location"
 import Loader from "@/app/components/Loader"
-import { Suspense, useState } from "react"
+import { Suspense, useRef, useState } from "react"
 import LocationBottomSheet from "./components/LocationBottomSheet"
 import { CreateLocationDto } from "@/api/location/types"
 import { toast } from "react-toastify"
+import DeleteConfirmationPopup from "@/app/components/DeleteConfirmationPopup"
 
 const YourPage: React.FC = () => {
   const createMutation = useAddLocation()
@@ -51,14 +52,23 @@ export default YourPage
 const LocationList = () => {
   const { data: locations } = useLocations()
   const deleteMutation = useDeleteLocation()
+  const [openPopup, setOpenPopup] = useState(false)
+  const selectedLocationName = useRef('')
 
-  const handleDelete = (name: string) => {
-    deleteMutation.mutate(name, {
+  const handleDeleteButtonClick = (name: string) => {
+    selectedLocationName.current = name
+    setOpenPopup(true)
+  }
+
+  const handleDelete = () => {
+    deleteMutation.mutate(selectedLocationName.current, {
       onSuccess: () => {
+        setOpenPopup(false)
         toast.success('삭제 성공')
       }
     })
   }
+
   return (
     <div>
       {locations.map((location) => (
@@ -67,10 +77,10 @@ const LocationList = () => {
           className="w-full py-2 flex justify-between"
         >
           {location.name}
-          <button onClick={() => handleDelete(location.name)} className="text-sm px-2 font-semibold py-1 rounded-lg">삭제</button>
+          <button onClick={() => handleDeleteButtonClick(location.name)} className="text-sm px-2 font-semibold py-1 rounded-lg">삭제</button>
         </div>
       ))}
-
+      <DeleteConfirmationPopup isOpen={openPopup} onClose={() => setOpenPopup(false)} onConfirm={handleDelete} />
     </div>
   )
 }
