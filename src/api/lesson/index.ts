@@ -1,6 +1,6 @@
 import { customFetch } from "@/lib/fetch"
 import { CopyDTO, CreateDTO, ILesson, UpdateDTO } from "./types"
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query"
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import useToken from "@/hooks/useToken"
 
 interface UseLessonsParams {
@@ -54,7 +54,13 @@ export const useCreateLesson = () => {
     return data
   }
 
-  return useMutation({ mutationFn: createLesson })
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: createLesson,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lessons'] })
+    }
+  })
 }
 
 export const useUpdateLesson = () => {
@@ -68,6 +74,24 @@ export const useUpdateLesson = () => {
   }
 
   return useMutation({ mutationFn: updateLesson })
+}
+
+export const useDeleteLesson = () => {
+  const token = useToken()
+  const queryClient = useQueryClient()
+  const deleteLesson = async ({ lessonId }: { lessonId: number }) => {
+    const { data } = await customFetch(`api/coach/deleteLesson/${lessonId}`, token, {
+      method: 'POST',
+    })
+    return data
+  }
+
+  return useMutation({
+    mutationFn: deleteLesson,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lessons'] })
+    }
+  })
 }
 
 export const useCopyLessons = () => {
