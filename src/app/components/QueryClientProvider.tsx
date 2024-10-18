@@ -15,13 +15,8 @@ export default function QueryClientProvider({ children }: { children: React.Reac
     },
     queryCache: new QueryCache({
       onError: (error) => {
-        if (error instanceof AuthError) {
+        if (error instanceof AuthError || error instanceof ForbiddenError) {
           redirectToLogin()
-          return
-        }
-        if (error instanceof ForbiddenError) {
-          alert('접근 권한이 없습니다. 관리자에게 문의하세요.')
-          return
         }
       }
     }),
