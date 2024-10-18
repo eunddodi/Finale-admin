@@ -40,23 +40,24 @@ export const getTimetableImage = async () => {
   return data
 }
 
-export const useGetMessageTemplate = () => {
+type TMessageType = 'deposit' | 'remind'
+export const useGetMessageTemplate = (type: TMessageType) => {
   const token = useToken()
   const getMessageTemplate = async () => {
-    const { data } = await customFetch('api/sms/detail', token)
+    const { data } = await customFetch(`api/sms/detail/${type}`, token)
     return data
   }
 
   return useSuspenseQuery({
-    queryKey: ['messageTemplate'],
+    queryKey: ['messageTemplate', type],
     queryFn: getMessageTemplate,
   })
 }
 
-export const useUpdateMessageTemplate = () => {
+export const useUpdateMessageTemplate = (type: TMessageType) => {
   const token = useToken()
   const updateMessageTemplate = async (message: string) => {
-    const { data } = await customFetch('api/sms/createTemplate', token,
+    const { data } = await customFetch(`api/sms/create/${type}`, token,
       {
         method: 'POST',
         body: JSON.stringify({ text: message })

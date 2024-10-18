@@ -2,12 +2,16 @@ import { useGetMessageTemplate, useUpdateMessageTemplate } from "@/api/notice"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-const MessageTemplateForm: React.FC = () => {
-  const query = useGetMessageTemplate()
+type Props = {
+  type: 'deposit' | 'remind'
+}
+
+const MessageTemplateForm: React.FC<Props> = ({ type }: Props) => {
+  const query = useGetMessageTemplate(type)
   const [text, setText] = useState('')
   useEffect(() => setText(query.data), [query.data])
 
-  const mutation = useUpdateMessageTemplate()
+  const mutation = useUpdateMessageTemplate(type)
   const handleSave = () => {
     mutation.mutate(text, {
       onSuccess: () => toast.success('수정 성공')
