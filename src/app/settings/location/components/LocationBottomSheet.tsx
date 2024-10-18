@@ -31,7 +31,7 @@ export default function LocationBottomSheet({ open, onOpenChange, onSave }: Prop
   }
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} handleOnly>
       <DrawerContent className="max-h-[90vh]">
         <DrawerHeader>
           <DrawerTitle>새 수업 장소 생성</DrawerTitle>

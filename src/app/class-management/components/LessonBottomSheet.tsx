@@ -56,7 +56,7 @@ export default function LessonBottomSheet({ open, onOpenChange, lessonId, onSave
   if (lessonId && !lesson) return null
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} handleOnly>
       <DrawerContent className="max-h-[90vh]">
         <DrawerHeader>
           <DrawerTitle>{lessonId ? '레슨 정보 수정' : '새 레슨 생성'}</DrawerTitle>
